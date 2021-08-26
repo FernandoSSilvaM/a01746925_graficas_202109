@@ -34,13 +34,15 @@ const fragmentShaderSource = `#version 300 es
     }`;
 
 
+//Revis Cambios del slider, cambia texto y vuelve a dibujar el triangulo.
 document.getElementById('myRange').addEventListener('change',function() {
   let tempRep = document.getElementById('myRange').value;
     document.getElementById("textDescr").innerHTML = "Recursiones: " + tempRep
   main(tempRep);
 });
 
-function main(permutation) 
+//Rrecibe las recursiones que se van a realizar
+function main(recs) 
 {
     const canvas = document.getElementById("webglcanvas");
 
@@ -54,13 +56,16 @@ function main(permutation)
 
     const shaderProgram = shaderUtils.initShader(gl, vertexShaderSource, fragmentShaderSource);
 
-    let permutations = permutation;
+    let recursions = recs;
     var firstListaTriangulosVertex = [];
+    //Se agrega los vertices triangulo base
     firstListaTriangulosVertex.push([0.0,1.0,-1,-1,1.0,-1.0]);
 
-    let finalListTrianglesVertex =permutateTriangles(firstListaTriangulosVertex, permutations);
+    //Es la lista final de vertices
+    let finalListTrianglesVertex =permutateTriangles(firstListaTriangulosVertex, recursions);
     var listTriangles = [];
 
+    //Transformo los vertices en traingulos
     for (let i = 0; i < finalListTrianglesVertex.length; i++) {
         let triangleVertex = finalListTrianglesVertex[i];
         let tempTriangle = createTriangle(gl, triangleVertex[0],triangleVertex[1],triangleVertex[2],triangleVertex[3],triangleVertex[4],
@@ -84,17 +89,22 @@ function main(permutation)
 
 
 
-function permutateTriangles(listaTriangulos, permutations){
+function permutateTriangles(listaTriangulos, recursions){
 
-    if(permutations == 0){
+    if(recursions == 0){
         return listaTriangulos;
     } else{
         var tempList = []
         const repeat = listaTriangulos.length;
+        /*
+        En este ciclo se "borran" los vertices de (el/los) triangulos
+        iniciales y se agregan los nuevos. Recurse si se quieren hacer mas
+        permutaciones
 
-        
+        */
         for (let i = 0; i < repeat ;i++){
             let tempVertex = [listaTriangulos.pop()]
+            //Se guarda como una matriz al parecer...
             let x1 = tempVertex[0][0];
             let y1 = tempVertex[0][1];
             let x2 = tempVertex[0][2];
@@ -109,7 +119,7 @@ function permutateTriangles(listaTriangulos, permutations){
             let a3 = x1
             let b3 = y2
 
-
+            //Se crean los vertices de los triangulos
             //arriba
             tempList.push([ x1,y1,
                             a1,b1,
@@ -125,7 +135,7 @@ function permutateTriangles(listaTriangulos, permutations){
 
         }
 
-        return permutateTriangles(tempList, (permutations-1));
+        return permutateTriangles(tempList, (recursions-1));
 
     }
 
@@ -272,5 +282,6 @@ function draw(gl, shaderProgram, obj)
     gl.drawArrays(obj.primtype, 0, obj.nVerts);
 }
 
+//la recursion default es 0
 window.onload = main(0);
 //main();
