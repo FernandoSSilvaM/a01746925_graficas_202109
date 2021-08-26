@@ -104,7 +104,8 @@ function permutateTriangles(listaTriangulos, recursions){
         */
         for (let i = 0; i < repeat ;i++){
             let tempVertex = [listaTriangulos.pop()]
-            //Se guarda como una matriz al parecer...
+            //Se guarda como una matriz al parecer.asd..
+            console.log(tempVertex)
             let x1 = tempVertex[0][0];
             let y1 = tempVertex[0][1];
             let x2 = tempVertex[0][2];
@@ -112,10 +113,10 @@ function permutateTriangles(listaTriangulos, recursions){
             let x3 = tempVertex[0][4];
             let y3 = tempVertex[0][5]; 
 
-            let a1 = (x2/ 2.0)
-            let b1 = (y2/ 2.0)
-            let a2 = (x3/ 2.0)
-            let b2 = (y3/ 2.0)
+            let a1 = (x1 + x2)/ 2.0
+            let b1 = (y1 + y2)/ 2.0
+            let a2 = (x1 + x3)/ 2.0
+            let b2 = (y1 + y3)/ 2.0
             let a3 = x1
             let b3 = y2
 
